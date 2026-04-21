@@ -12,8 +12,8 @@ export default function Hero({ data }) {
           <h1 className="hero__title" style={{ whiteSpace: "pre-line" }}>
             {data.title}
           </h1>
-          <p className="hero__subtitle">{data.subtitle}</p>
-          <p className="hero__excerpt">{data.excerpt}</p>
+          {data.subtitle && <p className="hero__subtitle">{data.subtitle}</p>}
+          {data.excerpt && <p className="hero__excerpt">{data.excerpt}</p>}
           <div className="hero__actions">
             <a href="#read" className="btn btn--solid btn--lg">
               최신호 읽기

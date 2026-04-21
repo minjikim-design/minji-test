@@ -1,5 +1,102 @@
+import { useState } from "react";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
+
+function PlanningAISummary() {
+  const [state, setState] = useState("idle");
+
+  const handleSummarize = () => {
+    setState("loading");
+    setTimeout(() => setState("done"), 2200);
+  };
+
+  const handleReset = () => setState("idle");
+
+  const summary = [
+    {
+      h: "방향성",
+      b: "스레드·X처럼 유저 참여형이 아닌 EO·오픈애즈·요즘IT 같은 공급자 중심 미디어형으로 운영한다.",
+    },
+    {
+      h: "목적",
+      b: "코워크시티 브랜드 인지도 향상. 유입 트래픽의 0.1%만 전환되어도 충분.",
+    },
+    {
+      h: "타겟",
+      b: "예비창업자·N잡러·초기창업자. 시작은 내국인, 확장은 외국인까지.",
+    },
+    {
+      h: "콘텐츠",
+      b: "사업 시작 가이드·정부지원금·세금·창업 트렌드·공간 주소 등 실무 정보.",
+    },
+    {
+      h: "운영 방식",
+      b: "Plan A(오픈클로/ChatGPT) 또는 Plan B(Claude Code)로 AI가 글 생성 → 1차 AI 검토 → 슬랙 승인 → Supabase 저장 → 사이트 자동 발행. 자동화는 추후 로드맵.",
+    },
+    {
+      h: "구조",
+      b: "오픈클로 레포와 코워크시티 레포는 git 독립, Supabase를 공용 저장소로 사용.",
+    },
+    {
+      h: "KPI",
+      b: "오픈 1개월 내 유입 유저 100~500명 목표. 이번 주 액션: 브랜드명 확정·홈페이지 제작·AI봇 세팅·테스트.",
+    },
+  ];
+
+  return (
+    <section className="proposal__ai-summary" aria-label="AI 요약">
+      <header className="proposal__ai-head">
+        <span className="proposal__ai-label">AI · SUMMARY</span>
+        {state === "done" && (
+          <button type="button" className="proposal__ai-reset" onClick={handleReset}>
+            원문으로 돌아가기
+          </button>
+        )}
+      </header>
+
+      <div className="proposal__ai-body">
+        {state === "idle" && (
+          <div className="proposal__ai-idle">
+            <p className="proposal__ai-idle-text">
+              긴 기획안을 10초 안에 파악하고 싶다면, AI 요약을 확인하세요.
+            </p>
+            <button type="button" className="proposal__ai-btn" onClick={handleSummarize}>
+              AI 요약 보기
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M13 6l6 6-6 6M5 18h12" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {state === "loading" && (
+          <div className="proposal__ai-loading">
+            <div className="proposal__ai-dots">
+              <span />
+              <span />
+              <span />
+            </div>
+            <span className="proposal__ai-loading-text">AI가 기획안을 요약 중입니다</span>
+          </div>
+        )}
+
+        {state === "done" && (
+          <div className="proposal__ai-done">
+            <div className="proposal__ai-badge">✓ 요약 완료 · 7개 핵심</div>
+            <ul className="proposal__ai-list">
+              {summary.map((s) => (
+                <li key={s.h}>
+                  <strong>{s.h}</strong>
+                  <span>{s.b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 export default function PlanningProposal() {
   return (
@@ -22,6 +119,8 @@ export default function PlanningProposal() {
             </p>
           </header>
 
+          <PlanningAISummary />
+
           <section className="proposal__section">
             <h2>1. 커뮤니티 방향성</h2>
             <ul className="proposal__list">
@@ -29,7 +128,6 @@ export default function PlanningProposal() {
               <li>EO, 오픈애즈, 요즘IT 처럼 <strong>공급자 역할</strong>에 집중한다</li>
             </ul>
           </section>
-
           <section className="proposal__section">
             <h2>2. 커뮤니티를 왜 하는가?</h2>
             <ul className="proposal__list">
@@ -37,7 +135,6 @@ export default function PlanningProposal() {
               <li>유입 트래픽의 0.1%만 전환돼도 충분하다 — 조금씩, 꾸준히 인지도를 쌓는다</li>
             </ul>
           </section>
-
           <section className="proposal__section">
             <h2>3. 누구를 타겟으로?</h2>
             <ul className="proposal__list">
@@ -65,7 +162,6 @@ export default function PlanningProposal() {
               </p>
             </div>
           </section>
-
           <section className="proposal__section">
             <h2>4. 무엇을 제공할 것인가?</h2>
             <ul className="proposal__list">
@@ -77,9 +173,126 @@ export default function PlanningProposal() {
               <li>공간 주소 (코워크시티 지점 노출)</li>
             </ul>
           </section>
-
           <section className="proposal__section">
-            <h2>5. 실행은 어떻게?</h2>
+            <h2>5. 추후 확장성</h2>
+
+            <div className="proposal__segment">
+              <h3 className="proposal__segment-title">
+                <span className="proposal__segment-tag">내국인</span>
+              </h3>
+              <ul className="proposal__list">
+                <li>아티클 → <strong>카드뉴스 자동화</strong></li>
+                <li>
+                  추후 — 외부 기업 기고 도입 (심사 통과 후 참여).
+                  오픈애즈처럼 <strong>심사 진입장벽</strong>으로 콘텐츠 희소성을 확보하고,
+                  기고 글을 뉴스레터로 자동 활용하는 구조로 <strong>금전 보상 없이 참여를 유도</strong>한다.
+                </li>
+              </ul>
+            </div>
+
+            <div className="proposal__segment">
+              <h3 className="proposal__segment-title">
+                <span className="proposal__segment-tag proposal__segment-tag--intl">외국인</span>
+              </h3>
+              <ul className="proposal__list">
+                <li>아티클 → <strong>영어 버전 유튜브</strong>로 재가공</li>
+                <li>
+                  <strong>외국인 대상 정부지원사업 연계</strong> — 영어 콘텐츠를 축으로
+                  외국인 예비창업자·창업자를 위한 정부지원사업 정보를 큐레이션·가이드로 제공.
+                  한국어 콘텐츠 대비 경쟁이 적어 틈새 트래픽 확보가 가능하고,
+                  코워크시티의 외국인 멤버 유입 채널로도 기능한다.
+                </li>
+              </ul>
+            </div>
+          </section>
+          <section className="proposal__section">
+            <h2>6. KPI</h2>
+            <div className="proposal__kpi">
+              <div className="proposal__kpi-grid">
+                <div className="proposal__kpi-item">
+                  <span className="proposal__kpi-phase">오픈 ~ 1개월</span>
+                  <span className="proposal__kpi-label">시작 · 유입 유저</span>
+                  <span className="proposal__kpi-value">100 ~ 500명</span>
+                </div>
+                <div className="proposal__kpi-item">
+                  <span className="proposal__kpi-phase">1 ~ 2개월</span>
+                  <span className="proposal__kpi-label">활성 뷰어</span>
+                  <span className="proposal__kpi-value proposal__kpi-value--muted">미정</span>
+                </div>
+                <div className="proposal__kpi-item">
+                  <span className="proposal__kpi-phase">~ 3개월</span>
+                  <span className="proposal__kpi-label">활성 뷰어</span>
+                  <span className="proposal__kpi-value proposal__kpi-value--muted">미정</span>
+                </div>
+              </div>
+
+              <div className="proposal__kpi-actions">
+                <h3>당장 액션 — 이번 주</h3>
+                <ul className="proposal__action-list">
+                  <li>브랜드명 확정</li>
+                  <li>홈페이지 제작</li>
+                  <li>AI봇 세팅</li>
+                  <li>테스트</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section className="proposal__section">
+            <h2>7. 기대 효과</h2>
+            <p>
+              <strong>브랜드 인지 → 홈페이지 유입 증가 → 잠재 계약 전환</strong>.
+              단, 지금 단계에서는 전환이 일어나지 않아도 괜찮다 — 유입만 확보되어도 충분히 유의미하다.
+            </p>
+          </section>
+          <section className="proposal__section">
+            <h2>8. 정해야 할 것 <span className="proposal__todo-count">4</span></h2>
+            <div className="proposal__todos">
+              <article className="proposal__todo">
+                <div className="proposal__todo-head">
+                  <span className="proposal__todo-num">Q1</span>
+                  <h3>24시간 자동 업로드 필요한가?</h3>
+                </div>
+                <ul className="proposal__sublist">
+                  <li>사람이 중간 검증은 필요함 → 퀄리티 좋아지면 추후 자동화 단계에서 24시간 자동화로 전환</li>
+                </ul>
+              </article>
+
+              <article className="proposal__todo">
+                <div className="proposal__todo-head">
+                  <span className="proposal__todo-num">Q2</span>
+                  <h3>계획 기간</h3>
+                </div>
+                <ul className="proposal__sublist">
+                  <li>이번 주 — AI봇 세팅 테스트</li>
+                  <li>다음 주까지 — 커뮤니티 페이지 세팅 → 검토 후 업로드</li>
+                  <li><em>(AI 세팅 기간이 변수가 될 수 있음)</em></li>
+                </ul>
+              </article>
+
+              <article className="proposal__todo">
+                <div className="proposal__todo-head">
+                  <span className="proposal__todo-num">Q3</span>
+                  <h3>아티클 주제 — 다룰 것 / 안 다룰 것</h3>
+                </div>
+                <ul className="proposal__sublist">
+                  <li>창업 관련 콘텐츠 중 <strong>"이런 건 안 된다"</strong> 기준 정립 필요</li>
+                </ul>
+              </article>
+
+              <article className="proposal__todo">
+                <div className="proposal__todo-head">
+                  <span className="proposal__todo-num">Q4</span>
+                  <h3>페이지 오픈 후 홍보</h3>
+                </div>
+                <ul className="proposal__sublist">
+                  <li>대시보드 · 알림톡 등 채널 검토</li>
+                  <li><em>(급하지 않음 — 오픈 이후 순차 진행)</em></li>
+                </ul>
+              </article>
+            </div>
+          </section>
+          <section className="proposal__section">
+            <h2>9. 실행은 어떻게?</h2>
             <ul className="proposal__list">
               <li>
                 코워크시티 메인 홈페이지 상단에 <strong>같은 도메인 / 다른 경로</strong>(요즘IT 방식)로 진입점을 만든다
@@ -700,80 +913,6 @@ export default function PlanningProposal() {
               </article>
               </div>
             </details>
-          </section>
-
-          <section className="proposal__section">
-            <h2>6. 추후 확장성</h2>
-
-            <div className="proposal__segment">
-              <h3 className="proposal__segment-title">
-                <span className="proposal__segment-tag">내국인</span>
-              </h3>
-              <ul className="proposal__list">
-                <li>아티클 → <strong>카드뉴스 자동화</strong></li>
-                <li>
-                  추후 — 외부 기업 기고 도입 (심사 통과 후 참여).
-                  오픈애즈처럼 <strong>심사 진입장벽</strong>으로 콘텐츠 희소성을 확보하고,
-                  기고 글을 뉴스레터로 자동 활용하는 구조로 <strong>금전 보상 없이 참여를 유도</strong>한다.
-                </li>
-              </ul>
-            </div>
-
-            <div className="proposal__segment">
-              <h3 className="proposal__segment-title">
-                <span className="proposal__segment-tag proposal__segment-tag--intl">외국인</span>
-              </h3>
-              <ul className="proposal__list">
-                <li>아티클 → <strong>영어 버전 유튜브</strong>로 재가공</li>
-                <li>
-                  <strong>외국인 대상 정부지원사업 연계</strong> — 영어 콘텐츠를 축으로
-                  외국인 예비창업자·창업자를 위한 정부지원사업 정보를 큐레이션·가이드로 제공.
-                  한국어 콘텐츠 대비 경쟁이 적어 틈새 트래픽 확보가 가능하고,
-                  코워크시티의 외국인 멤버 유입 채널로도 기능한다.
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <section className="proposal__section">
-            <h2>7. KPI</h2>
-            <div className="proposal__kpi">
-              <div className="proposal__kpi-grid">
-                <div className="proposal__kpi-item">
-                  <span className="proposal__kpi-phase">오픈 ~ 1개월</span>
-                  <span className="proposal__kpi-label">시작 · 유입 유저</span>
-                  <span className="proposal__kpi-value">100 ~ 500명</span>
-                </div>
-                <div className="proposal__kpi-item">
-                  <span className="proposal__kpi-phase">1 ~ 2개월</span>
-                  <span className="proposal__kpi-label">활성 뷰어</span>
-                  <span className="proposal__kpi-value proposal__kpi-value--muted">미정</span>
-                </div>
-                <div className="proposal__kpi-item">
-                  <span className="proposal__kpi-phase">~ 3개월</span>
-                  <span className="proposal__kpi-label">활성 뷰어</span>
-                  <span className="proposal__kpi-value proposal__kpi-value--muted">미정</span>
-                </div>
-              </div>
-
-              <div className="proposal__kpi-actions">
-                <h3>당장 액션 — 이번 주</h3>
-                <ul className="proposal__action-list">
-                  <li>브랜드명 확정</li>
-                  <li>홈페이지 제작</li>
-                  <li>AI봇 세팅</li>
-                  <li>테스트</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="proposal__section">
-            <h2>8. 기대 효과</h2>
-            <p>
-              <strong>브랜드 인지 → 홈페이지 유입 증가 → 잠재 계약 전환</strong>.
-              단, 지금 단계에서는 전환이 일어나지 않아도 괜찮다 — 유입만 확보되어도 충분히 유의미하다.
-            </p>
           </section>
 
           <footer className="proposal__footer">

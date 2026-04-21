@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function NewsletterSection({ data, variant = "grid" }) {
   const [query, setQuery] = useState("");
@@ -151,15 +152,9 @@ function GridLayout({ items }) {
           </article>
         );
         return it.href ? (
-          <a
-            key={it.issue}
-            href={it.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-link"
-          >
+          <Link key={it.issue} to={it.href} className="card-link">
             {card}
-          </a>
+          </Link>
         ) : (
           <div key={it.issue}>{card}</div>
         );

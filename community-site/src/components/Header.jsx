@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -15,7 +16,7 @@ export default function Header() {
   return (
     <header className="site-header" data-scrolled={scrolled} data-open={open}>
       <div className="site-header__inner">
-        <a href="#" className="brand" aria-label="코워크시티 홈">
+        <Link to="/" className="brand" aria-label="코워크시티 홈">
           <span className="brand__mark" aria-hidden="true">
             <svg viewBox="0 0 32 32" width="28" height="28">
               <rect x="3" y="3" width="11" height="11" rx="1.5" fill="currentColor" />
@@ -27,7 +28,7 @@ export default function Header() {
           <span className="brand__wordmark">
             cowork<span className="brand__dot">.</span>city
           </span>
-        </a>
+        </Link>
 
         <nav className="site-nav" aria-label="Primary">
           {nav.map((n) => (
