@@ -121,30 +121,49 @@ function MagazineLayout({ items }) {
 function GridLayout({ items }) {
   return (
     <div className="grid-variant">
-      {items.map((it) => (
-        <article key={it.issue} className="card" tabIndex="0">
-          <div className="card__media" data-tone={it.tone}>
-            <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="240" fill="currentColor" opacity="0.05" />
-              <rect x="30" y="40" width="120" height="160" fill="currentColor" opacity="0.10" />
-              <circle cx="280" cy="120" r="70" fill="none" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-            <span className="card__issue">#{it.issue}</span>
-          </div>
-          <div className="card__body">
-            <div className="item-meta">
-              <span className="item-meta__cat">{it.category}</span>
-              <span className="item-meta__sep">·</span>
-              <span>{it.readTime}</span>
+      {items.map((it) => {
+        const card = (
+          <article className="card" tabIndex="0">
+            <div className="card__media" data-tone={it.tone}>
+              <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice">
+                <rect width="400" height="240" fill="currentColor" opacity="0.05" />
+                <rect x="30" y="40" width="120" height="160" fill="currentColor" opacity="0.10" />
+                <circle cx="280" cy="120" r="70" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+              <span
+                className={`card__issue${it.badgeColor ? ` card__issue--${it.badgeColor}` : ""}`}
+              >
+                {it.badge ?? `#${it.issue}`}
+              </span>
             </div>
-            <h3 className="card__title">{it.title}</h3>
-            <div className="card__foot">
-              <span>{it.date}</span>
-              <span className="card__arrow" aria-hidden>→</span>
+            <div className="card__body">
+              <div className="item-meta">
+                <span className="item-meta__cat">{it.category}</span>
+                <span className="item-meta__sep">·</span>
+                <span>{it.readTime}</span>
+              </div>
+              <h3 className="card__title">{it.title}</h3>
+              <div className="card__foot">
+                <span>{it.date}</span>
+                <span className="card__arrow" aria-hidden>→</span>
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+        return it.href ? (
+          <a
+            key={it.issue}
+            href={it.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card-link"
+          >
+            {card}
+          </a>
+        ) : (
+          <div key={it.issue}>{card}</div>
+        );
+      })}
     </div>
   );
 }

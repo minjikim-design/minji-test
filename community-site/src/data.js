@@ -11,7 +11,7 @@ export const NEWSLETTER_DATA = {
     cover: "editorial",
   },
   archive: [
-    { issue: 41, date: "2026. 04. 04", category: "아티클", title: "왜 우리는 다시 사무실로 모이는가", readTime: "6분", tone: "warm" },
+    { issue: 41, date: "2026. 04. 21", category: "아티클", title: "커뮤니티 방향성 기획안", readTime: "6분", tone: "warm", badge: "기획안", badgeColor: "green", href: "/planning" },
     { issue: 40, date: "2026. 03. 21", category: "인터뷰", title: "사이드 프로젝트가 본업이 되기까지", readTime: "10분", tone: "cool" },
     { issue: 39, date: "2026. 03. 07", category: "리포트", title: "2026 독립 워커 실태 조사", readTime: "12분", tone: "dark" },
     { issue: 38, date: "2026. 02. 21", category: "에세이", title: "카페가 아닌 곳에서 일하는 일", readTime: "5분", tone: "warm" },
